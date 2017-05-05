@@ -23,6 +23,10 @@ public class VoteResults {
     private String numberOfSession;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;
+    //TODO finish
+    private class Proposal{
+        String name,type;
+    }
     //назва закону
     private String proposalName;
     // За основу За пропозицію...

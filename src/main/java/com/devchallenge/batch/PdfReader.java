@@ -106,8 +106,10 @@ public class PdfReader {
         String x = matcher.group(1).replaceAll("\\r\\n", " ");
         String[] str = x.trim().split("\\s+");
         for (int i = 0; i < str.length; i += 5) {
+            //Extract
             String fullName = str[i + 1] + " " + str[i + 2] + " " + str[i + 3];
             String decision = str[i + 4];
+            //Refactor
             if ("Не".equals(decision)) {
                 decision += " " + str[i + 5];
                 i++;
