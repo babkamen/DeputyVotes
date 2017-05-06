@@ -23,17 +23,13 @@ public class VoteResults {
     private String numberOfSession;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;
-    //TODO finish
-    private class Proposal{
-        String name,type;
-    }
+    @Lob
+    @Column(length = 20971520)
     //назва закону
-    private String proposalName;
-    // За основу За пропозицію...
-    private String proporsalType;
-    //рішення депутатів
+    private String proposal;
     @OneToOne(targetEntity = VoteWrapper.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "vote_id")
+    //рішення депутатів
     private VoteWrapper votes;
     private String decision;
     //за проти утримались

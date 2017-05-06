@@ -22,7 +22,9 @@ public class PdfReader {
     public static final String DECISION = "Рішення:";
     public static final String DEPUTY_VOTES_REGEX =
             "Результат\r\nголосування.*Результат\r\nголосування(.+?)ПІДСУМКИ ГОЛОСУВАННЯ";
+    public static final String PROPOSAL_REGEX = "(?<=Результат поіменного голосування:)(.*)(?=№:.*)";
     private PDDocument doc;
+    public static final String NOT = "Не";
     private int pageNum = 1;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy");
     PDFTextStripper pdfStripper = new PDFTextStripper();
@@ -75,15 +77,14 @@ public class PdfReader {
         } catch (IllegalArgumentException e) {
             log.error("{} when trying to parse file {} pageNumb=", e.getMessage(), this.fileName, this.pageNum - 1);
         }
-
-//TODO add next lines
-        String proposalName = str[4];
+        String proposal = findByRegex(s,PROPOSAL_REGEX).replaceAll("\r\n","").trim();
+        log.debug("Proposal={}",proposal);
+        log.info("Processing {}.PageNum {} out of {}", fileName, pageNum, count);
         return VoteResults.builder()
                 .date(LocalDate.parse(parsedDate, formatter))
                 .title(str[0])
                 .placeName(str[1])
-                .proposalName(proposalName)
-//                .proporsalType(str[5].replace(" №: Б/н  ",""))
+                .proposal(proposal)
                 .votes(votes)
                 .decision(decision)
                 .accepted(accepted)
@@ -94,8 +95,14 @@ public class PdfReader {
                 .build();
     }
 
+    private String findByRegex(String s,String regex) {
+        Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(s);
+        matcher.find();
+        return matcher.group(1);
+    }
+
     private VoteWrapper parseIndividualVotes(String s) {
-//        VoteWrapper res = new VoteWrapper();
         Map<VoteType, List<String>> votes = new HashMap<>(5, 1);
         for (VoteType voteType : VoteType.values()) {
             votes.put(voteType, new LinkedList<>());
@@ -107,10 +114,12 @@ public class PdfReader {
         String[] str = x.trim().split("\\s+");
         for (int i = 0; i < str.length; i += 5) {
             //Extract
-            String fullName = str[i + 1] + " " + str[i + 2] + " " + str[i + 3];
+            String fistName = str[i + 1],
+                    lastName = str[i + 2],
+                    middleName = str[i + 3];
+            String fullName = fistName + " " + lastName + " " + middleName;
             String decision = str[i + 4];
-            //Refactor
-            if ("Не".equals(decision)) {
+            if (NOT.equals(decision)) {
                 decision += " " + str[i + 5];
                 i++;
             }
@@ -131,5 +140,9 @@ public class PdfReader {
 
     public void reset() {
         this.pageNum = 1;
+    }
+
+    public void setPageNum(int pageNum) {
+        this.pageNum = pageNum;
     }
 }
