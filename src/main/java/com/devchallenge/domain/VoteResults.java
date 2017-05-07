@@ -20,7 +20,6 @@ public class VoteResults {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String title, placeName;
-    private String numberOfSession;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;
     @Lob
@@ -34,6 +33,5 @@ public class VoteResults {
     private String decision;
     //за проти утримались
     private int accepted, rejected, abstained, absent, notVoted;
-
 
 }

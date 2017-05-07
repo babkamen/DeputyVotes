@@ -1,24 +1,3 @@
-# mysql:
-#      image: mysql:5.7
-#      container_name: mysql
-#      restart: always
-#      environment:
-#        MYSQL_ROOT_PASSWORD: somepass
-#        MYSQL_DATABASE: devqual
-#        MYSQL_USER: demo_user
-#        MYSQL_PASSWORD: demo_pass    
-
-# web:
-#     container_name: web
-#     working_dir: /app
-#     build: .
-#     links: 
-#        - "mysql:mysql"
-#     dockerfile: src/main/docker/Dockerfile
-#     ports:
-#       - 
-#       - "8080:8080"
-#     
 version: '2.1'
 
 services: 
