@@ -1,4 +1,4 @@
-package com.devchallenge.domain;
+package com.devchallenge.domain.similarity;
 
 
 import org.springframework.data.repository.PagingAndSortingRepository;

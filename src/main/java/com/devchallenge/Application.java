@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -22,6 +23,7 @@ import static com.devchallenge.util.Utils.listFilesForFolder;
 @EntityScan(basePackages = {"com.devchallenge.domain"})
 @EnableJpaRepositories(basePackages = {"com.devchallenge.domain"})
 @EnableAsync
+@EnableRetry
 public class Application {
 
     @Autowired

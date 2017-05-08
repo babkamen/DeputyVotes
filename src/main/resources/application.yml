@@ -34,3 +34,14 @@ spring:
     password: ${DATABASE_PASSWORD}
 watcher:
   path: /usr/data
+
+---
+spring:
+  profiles: test
+  datasource:
+        url: jdbc:mysql://localhost:51231/devqual
+  jpa:
+      show-sql: true
+
+db:
+  port: 51231

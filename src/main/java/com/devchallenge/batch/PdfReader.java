@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.backoff.ExponentialBackOff;
 
@@ -25,6 +26,8 @@ public class PdfReader {
     public PdfReader() throws IOException {
     }
 
+    //Retry if canot open file
+    @Retryable(maxAttempts = 10)
     public PdfReader init(File file) throws IOException {
         fileName = file.getAbsolutePath();
         ExponentialBackOff exponentialBackOff = new ExponentialBackOff(1000L, 2);

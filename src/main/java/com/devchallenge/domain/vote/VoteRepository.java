@@ -1,4 +1,4 @@
-package com.devchallenge.domain;
+package com.devchallenge.domain.vote;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;

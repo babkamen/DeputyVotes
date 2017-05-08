@@ -1,4 +1,4 @@
-package com.devchallenge.domain;
+package com.devchallenge.domain.vote;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @Builder
@@ -26,10 +25,9 @@ public class VoteResults {
     @Column(length = 20971520)
     //назва закону
     private String proposal;
-    @OneToOne(targetEntity = VoteWrapper.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "vote_id")
-    //рішення депутатів
+    @Embedded
     private VoteWrapper votes;
+    //рішення депутатів
     private String decision;
     //за проти утримались
     private int accepted, rejected, abstained, absent, notVoted;

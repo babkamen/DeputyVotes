@@ -1,4 +1,4 @@
-package com.devchallenge.domain;
+package com.devchallenge.domain.vote;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

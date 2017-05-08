@@ -1,8 +1,8 @@
 package com.devchallenge.batch;
 
-import com.devchallenge.domain.VoteResults;
-import com.devchallenge.domain.VoteType;
-import com.devchallenge.domain.VoteWrapper;
+import com.devchallenge.domain.vote.VoteResults;
+import com.devchallenge.domain.vote.VoteType;
+import com.devchallenge.domain.vote.VoteWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,10 +1,13 @@
-package com.devchallenge.domain;
+package com.devchallenge.domain.vote;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.File;
@@ -15,19 +18,15 @@ import static com.devchallenge.util.Utils.listFilesForFolder;
 
 @Data
 @Builder
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Embeddable
 public class VoteWrapper {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
-    @JsonIgnore
-    private Long voteResultId;
 
     @Column
     @ElementCollection(targetClass=String.class)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<String> accepted,rejected,notVoted,abstained,absent;
 
     public List<String> getAllDeputies(){
