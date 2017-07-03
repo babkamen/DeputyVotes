@@ -33,7 +33,7 @@ spring:
     username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
 watcher:
-  path: /usr/data
+  path: /tmp
 
 ---
 spring:

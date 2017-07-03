@@ -22,3 +22,9 @@ services:
       - DATABASE_PASSWORD=dbp4ss
       - DATABASE_NAME=demo
       - DATABASE_PORT=3306
+    volumes:
+      - mymagicvolume:/tmp
+
+volumes:
+  mymagicvolume:
+    external: true
