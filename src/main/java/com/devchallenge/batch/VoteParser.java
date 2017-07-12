@@ -20,10 +20,10 @@ import static com.devchallenge.util.Utils.getLastDigits;
 @Slf4j
 @Component
 public class VoteParser {
-    public static final String DEPUTY_VOTES_REGEX =
-            "Результат\r\nголосування.*Результат\r\nголосування(.+?)ПІДСУМКИ ГОЛОСУВАННЯ";
     public static final String PROPOSAL_REGEX = "(?<=Результат поіменного голосування:)(.*)(?=№:.*)";
+    public static final String DEPUTY_VOTES_START_WORD = "голосування";
     public static final String NOT = "Не";
+    public static final String VOTE_RESULTS = "ПІДСУМКИ ГОЛОСУВАННЯ";
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy");
 
     PdfReader reader;
@@ -33,33 +33,34 @@ public class VoteParser {
         this.reader = reader;
     }
 
-    public VoteResults parse(String s) throws IOException{
-//        if(!isCompletePage(s)){
-//            throw new NotAllInfoOnPageException();
-//        }
-        String[] str = s.split("\\r\\n");
-        log.debug(s);
-        log.debug(Arrays.toString(str));
+    public VoteResults parse(String s) throws IOException {
+        String[] str = s.split("\\r?\\n");
+        log.debug("PageInfo={}", Arrays.toString(str));
 
         String session = str[2];
         String parsedDate = session.substring(session.length() - 8);
         String decision = str[str.length - 2];
         decision = decision.substring(DECISION.length() + 1);
 
-        log.debug("Parsing numb of accepted votes");
-        Integer accepted = getLastDigits(str[str.length - 7]);
+        String acceptedVotes = str[str.length - 7];
+        log.debug("Parsing numb of accepted votes from {}", acceptedVotes);
+        Integer accepted = getLastDigits(acceptedVotes);
 
-        log.debug("Parsing numb of rejected votes");
-        Integer rejected = getLastDigits(str[str.length - 6]);
+        String rejectedVotes = str[str.length - 6];
+        log.debug("Parsing numb of rejected votes from {}", rejectedVotes);
+        Integer rejected = getLastDigits(rejectedVotes);
 
-        log.debug("Parsing numb of abstained votes");
-        Integer abstained = getLastDigits(str[str.length - 5]);
+        String abstainedVotes = str[str.length - 5];
+        log.debug("Parsing numb of abstained votes from {}", abstainedVotes);
+        Integer abstained = getLastDigits(abstainedVotes);
 
-        log.debug("Parsing numb of notVoted deputies");
-        Integer notVoted = getLastDigits(str[str.length - 3]);
+        String notVotedDeputies = str[str.length - 3];
+        log.debug("Parsing numb of notVoted deputies from {}", notVotedDeputies);
+        Integer notVoted = getLastDigits(notVotedDeputies);
 
-        log.debug("Parsing numb of absent deputies");
-        Integer absent = getLastDigits(str[str.length - 4]);
+        String absentDeputies = str[str.length - 4];
+        log.debug("Parsing numb of absent deputies from {}", absentDeputies);
+        Integer absent = getLastDigits(absentDeputies);
 
         log.debug("Agreed=" + str[str.length - 7] + "\n" + accepted);
         VoteWrapper votes = null;
@@ -87,7 +88,6 @@ public class VoteParser {
     }
 
 
-
     private String findByRegex(String s, String regex) {
         Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
         Matcher matcher = pattern.matcher(s);
@@ -95,15 +95,15 @@ public class VoteParser {
         return matcher.group(1);
     }
 
-    private VoteWrapper parseIndividualVotes(String s) {
+    public static VoteWrapper parseIndividualVotes(String s) {
         Map<VoteType, List<String>> votes = new HashMap<>(5, 1);
         for (VoteType voteType : VoteType.values()) {
             votes.put(voteType, new LinkedList<>());
         }
-        final Pattern pattern = Pattern.compile(DEPUTY_VOTES_REGEX, Pattern.DOTALL);
-        Matcher matcher = pattern.matcher(s);
-        matcher.find();
-        String x = matcher.group(1).replaceAll("\\r\\n", " ");
+        int startIndex = s.lastIndexOf(DEPUTY_VOTES_START_WORD);
+        int endIndex = s.indexOf(VOTE_RESULTS);
+
+        String x = s.substring(startIndex + DEPUTY_VOTES_START_WORD.length(), endIndex).replaceAll("\\r\\n", " ");
         String[] str = x.trim().split("[\\s\\xA0]+");
         for (int i = 0; i < str.length; i += 5) {
             String fistName = str[i + 1],

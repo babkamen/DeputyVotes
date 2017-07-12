@@ -6,7 +6,10 @@ import com.devchallenge.service.WatcherService;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnit44Runner;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
 import java.util.concurrent.Executors;
@@ -15,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+@RunWith(MockitoJUnitRunner.class)
 public class WatchServiceTests {
     @Mock
     VoteManager manager;

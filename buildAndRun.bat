@@ -1,1 +1,1 @@
-gradlew clean assemble&&docker-compose up --build
+gradlew  assemble&&docker-compose up --build -d 

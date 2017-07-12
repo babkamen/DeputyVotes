@@ -29,6 +29,7 @@ public class VoteWrapper {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<String> accepted,rejected,notVoted,abstained,absent;
 
+    @JsonIgnore
     public List<String> getAllDeputies(){
         List<String> result=new ArrayList<>(accepted);
         result.addAll(rejected);

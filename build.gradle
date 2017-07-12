@@ -29,6 +29,9 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-undertow")
 
 	compile 'mysql:mysql-connector-java'
+	compile group: 'org.postgresql', name: 'postgresql', version: '42.1.1'
+	compile group: 'org.hibernate', name: 'hibernate-c3p0', version: '5.2.10.Final'
+
 	compile group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.0.RELEASE'
 
 	compile("org.springframework.boot:spring-boot-starter-batch")
