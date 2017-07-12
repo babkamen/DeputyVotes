@@ -37,13 +37,14 @@ Technologies:
 - Docker, docker-compose
  
 ### How do I run project ###
-  docker-compose up --build 
- - Vote results
-  http://localhost:8080/votes
- - Similarity index
-  http://localhost:8080/similarity/search?deputyFullName={DeputyFullName}
- - For example
- http://localhost:8080/similarity/search?deputyFullName=Сапожко%20Ігор%20Васильович
+gradlew clean assemble&&docker-compose up --build -d 
+
+View online: 
+----
+
+- Vote results:  http://localhost:8080/votes
+- Similarity index:   http://localhost:8080/similarity/search?deputyFullName={DeputyFullName}
+- For example:   http://localhost:8080/similarity/search?deputyFullName=Сапожко%20Ігор%20Васильович
 
 
 
